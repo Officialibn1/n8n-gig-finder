@@ -1,0 +1,90 @@
+{
+  "name": "n8n Gig Finder – Error Alert",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bcddf2d6-6e3d-4845-803f-237ca409652d",
+      "name": "Errors: Trigger"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const NL = String.fromCharCode(10);\nconst wf = $json.workflow?.name ?? 'unknown workflow';\nconst ex = $json.execution ?? {};\nconst node = ex.lastNodeExecuted ?? 'unknown node';\n// Error text is untrusted: truncate and defang @mentions\nconst msg = String(ex.error?.message ?? 'no message').slice(0, 500)\n  .replace(/@/g, '@' + String.fromCharCode(8203));\nconst lines = [`🚨 **${wf}** failed at **${node}**`, msg];\nif (ex.url) lines.push(ex.url);\nreturn { json: { content: lines.join(NL) } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "832692d6-2670-4921-b42a-621c78ad582e",
+      "name": "Errors: Format Message"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "0f210498-82dd-4750-bcf8-3e2a5e9b6727",
+      "name": "Errors: Send to Discord",
+      "webhookId": "85a9aa4a-c025-4b20-aa2f-2be0d525290a",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "77cZsDaDnwkwzekd",
+          "name": "Discord Webhook"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Errors: Trigger": {
+      "main": [
+        [
+          {
+            "node": "Errors: Format Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Errors: Format Message": {
+      "main": [
+        [
+          {
+            "node": "Errors: Send to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "12ec1f4b-d0b9-4f9c-8c8f-77eb4f1851c8",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "id": "2jqt4IxG87i6221x",
+  "tags": []
+}
