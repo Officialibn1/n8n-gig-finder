@@ -6,7 +6,7 @@ An LLM **extracts facts** from each posting (budget, urgency, red flags). A Code
 
 > **Status**
 > - Built and tested on n8n **2.40.5**, self-hosted (Docker). Both workflows were also imported and run in a clean instance.
-> - **Two workflow files ship.** `gig-finder.json` is the slim version (OpenAI-compatible LLM, Telegram alerts): import this one. `gig-finder-full.json` adds Slack alerts and an Anthropic branch, with the provider and channel chosen in Config. Sections marked *(full only)* apply to the full file.
+> - **Two workflow files ship.** `gig-finder-slim.json` is the slim version (OpenAI-compatible LLM, Telegram alerts): import this one. `gig-finder-full.json` adds Slack alerts and an Anthropic branch, with the provider and channel chosen in Config. Sections marked *(full only)* apply to the full file.
 > - Tested: the n8n forum, Hacker News and Remotive sources; OpenAI (`gpt-4o`, default) and Upstage Solar models through the OpenAI-compatible branch; Telegram and Slack delivery; Discord error notices.
 > - Built but **not tested**: the Anthropic branch (full only; no API credit was available).
 > - **Not tested on n8n Cloud.** The workflow uses only core nodes and no external modules in Code nodes, so it should be portable, but Data Table availability and Code node limits on Cloud plans are unverified.
@@ -16,7 +16,7 @@ An LLM **extracts facts** from each posting (budget, urgency, red flags). A Code
 
 | File | What it is |
 |---|---|
-| `gig-finder.json` | Slim version: OpenAI-compatible LLM, Telegram alerts. Import this one. |
+| `gig-finder-slim.json` | Slim version: OpenAI-compatible LLM, Telegram alerts. Import this one. |
 | `gig-finder-full.json` | Adds Slack alerts and an Anthropic branch; provider and channel are chosen in Config. |
 | `gig-finder-error.json` | The error workflow. Import it with either version. |
 
